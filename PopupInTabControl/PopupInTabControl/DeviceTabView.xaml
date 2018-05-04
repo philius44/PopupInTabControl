@@ -1,0 +1,420 @@
+﻿<UserControl x:Class="PopupInTabControl.DeviceTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:converters="clr-namespace:WuH.ServiceTool.Core.Presentation.Converters"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PopupInTabControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:BooleanToNoVisibilityConverter x:Key="BooleanToNoVisibilityConverter" />
+        <converters:InvertBoolConverter x:Key="InvertBoolConverter"/>
+        <converters:MultiOrBooleanToVisibilityConverter x:Key="MultiOrBooleanToVisibilityConverter" />
+        <converters:MultiOrBooleanToNoVisibilityConverter x:Key="MultiOrBooleanToNoVisibilityConverter" />
+        <converters:MultiBooleanToVisibilityConverter x:Key="MultiBooleanToVisibilityConverter" />
+        <!--<Style TargetType="{x:Type TabControl}">
+            <Setter Property="OverridesDefaultStyle"
+                    Value="True" />
+            <Setter Property="SnapsToDevicePixels"
+                    Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid KeyboardNavigation.TabNavigation="Local">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="300" />
+                            </Grid.ColumnDefinitions>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Disabled" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="2"
+                                        Background="{StaticResource ST_DarkGray}">
+                                <TabPanel x:Name="HeaderPanel"
+                                          Height="60"
+                                          Panel.ZIndex="1"
+                                          Margin="0"
+                                          IsItemsHost="True"
+                                          KeyboardNavigation.TabIndex="1"
+                                          Background="{DynamicResource MaterialDesignBackground}" />
+                                <Button HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Width="32"
+                                        Padding="0"
+                                        Margin="10 0 0 0"
+                                        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}">
+                                    <Button.Content>
+                                        <materialDesign:PackIcon Height="30"
+                                                                 Width="30"
+                                                                 Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                                                 Kind="Plus"
+                                                                 HorizontalAlignment="Left"
+                                                                 VerticalAlignment="Center" />
+                                    </Button.Content>
+                                    --><!--<Button.CommandParameter>
+                                        <Grid Height="350" Width="550">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock FontSize="16"
+                                                       FontWeight="Bold"
+                                                       Margin="15"
+                                                       Grid.Row="0"
+                                                       TextAlignment="Left"
+                                                       Text="{loc:Loc ManualDeviceSelection}" />
+                                            <Grid Grid.Row="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <materialDesign:PackIcon Kind="Magnify"
+                                                                         Grid.Column="0"
+                                                                         HorizontalAlignment="Left"
+                                                                         VerticalAlignment="Center"
+                                                                         Margin="5"
+                                                                         Height="25"
+                                                                         Width="25"
+                                                                         Foreground="{DynamicResource TextColorDark}" />
+                                                <TextBox
+                                                    Text="{Binding NavigationViewModel.ManualProductSearchText, UpdateSourceTrigger=PropertyChanged}"
+                                                    Grid.Column="1"
+                                                    materialDesign:HintAssist.Hint="{loc:Loc SearchTextManualProductSearch}"
+                                                    Foreground="{DynamicResource TextColorDark}"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Stretch"
+                                                    Margin="0 0 5 0" />
+                                            </Grid>
+                                            <ListView Grid.Row="2"
+                                                      ItemsSource="{Binding NavigationViewModel.FilteredManualProducts}"
+                                                      SelectedItem="{Binding NavigationViewModel.SelectedManualProduct}"
+                                                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                                      SelectionMode="Single"
+                                                      Visibility="{Binding Path=NavigationViewModel.IsFilteredManualProductsEmpty, Converter={StaticResource BooleanToNoVisibilityConverter}}">
+                                                <ListView.View>
+                                                    <GridView>
+                                                        <GridViewColumn Header="{loc:Loc DeviceTypeName}"
+                                                                        Width="200"
+                                                                        DisplayMemberBinding="{Binding ProductType.Designation}" />
+                                                        <GridViewColumn Header="{loc:Loc RefNumberShort}"
+                                                                        Width="150"
+                                                                        DisplayMemberBinding="{Binding Refnumber}" />
+                                                        <GridViewColumn Header="{loc:Loc SerialNumberShort}"
+                                                                        Width="150"
+                                                                        DisplayMemberBinding="{Binding Serialnumber}" />
+                                                    </GridView>
+                                                </ListView.View>
+                                            </ListView>
+                                            <TextBlock Grid.Row="2"
+                                                       FontSize="16"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       Visibility="{Binding Path=NavigationViewModel.IsFilteredManualProductsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                       Text="{loc:Loc NoMatchingProductResults}" />
+                                            <WrapPanel Grid.Row="3"
+                                                       HorizontalAlignment="Right"
+                                                       Margin="10">
+                                                <Button Background="White"
+                                                        Foreground="Black"
+                                                        Grid.Column="0"
+                                                        Margin="5"
+                                                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                                                        Content="{loc:Loc Cancel}" />
+                                                <Button Grid.Column="1"
+                                                        Margin="5"
+                                                        Command="{Binding Path=NavigationViewModel.InsertProductCommand}"
+                                                        Content="{loc:Loc AddDevice}" />
+                                            </WrapPanel>
+                                        </Grid>
+                                    </Button.CommandParameter>--><!--
+                                </Button>
+                            </StackPanel>
+
+                            <ContentPresenter x:Name="PART_SelectedContentHost"
+                                              Margin="0"
+                                              Grid.Row="1"
+                                              Grid.Column="0"
+                                              Grid.ColumnSpan="2"
+                                              ContentSource="SelectedContent" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Grid x:Name="Root"
+                              Background="White">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Unselected">
+                                        <Storyboard>
+                                            <ColorAnimation From="{StaticResource ST_ColdGray_Color}"
+                                                            To="White"
+                                                            Storyboard.TargetName="Border"
+                                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                            FillBehavior="HoldEnd"
+                                                            Duration="0:0:0.250" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Selected">
+                                        <Storyboard>
+                                            <ColorAnimation From="White"
+                                                            To="{StaticResource ST_ColdGray_Color}"
+                                                            Storyboard.TargetName="Border"
+                                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                            FillBehavior="HoldEnd"
+                                                            Duration="0:0:0.250" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver" />
+                                    <VisualState x:Name="Disabled" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border x:Name="Border"
+                                    Margin="0">
+                                <Border.Background>
+                                    <SolidColorBrush Color="White" />
+                                </Border.Background>
+                                <ContentPresenter x:Name="ContentSite"
+                                                  Height="50"
+                                                  MinWidth="100"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  ContentSource="Header"
+                                                  Margin="5"
+                                                  RecognizesAccessKey="True" />
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected"
+                                     Value="True">
+                                <Setter Property="Panel.ZIndex"
+                                        Value="100" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
+        <Style TargetType="{x:Type Button}"
+               x:Key="CloseTabButton">
+            <Setter Property="CommandParameter">
+                <Setter.Value>
+                    <Grid Margin="10"
+                              Width="300"
+                              Height="150">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="70"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0"
+                                   Padding="5"
+                                   Text="RemoveProductTab"
+                                   FontSize="16"
+                                   FontWeight="Bold" />
+                        <StackPanel Grid.Row="1">
+                            <TextBlock TextWrapping="Wrap"
+                                       Padding="5" >                                                   
+                                <Run Text="RemoveProductTabPrompt}" />                          
+                                <Run Text="ProductName" />
+                                <Run Text=" RemoveProductTabPrompt2" />
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Right">
+                            <Button Background="White"
+                                    Foreground="Black"
+                                    Margin="5"
+                                    Content="Cancel"
+                                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" />
+                            <Button Margin="5"
+                                    Content="OkayButtonText"
+                                    Command="{Binding RemoveSelectedTabCommand}" />
+                        </StackPanel>
+                    </Grid>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <StackPanel>
+                            <Grid Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=IsMouseOver, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                  Margin="0"
+                                  Width="14"
+                                  Height="14"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center">
+                                <Ellipse Fill="{StaticResource WuHPalette800Brush}"
+                                         Margin="0 0 0 0" />
+                                <materialDesign:PackIcon Width="12"
+                                                         Height="12"
+                                                         Kind="Close"
+                                                         VerticalAlignment="Center"
+                                                         HorizontalAlignment="Center"
+                                                         Foreground="White"/>
+                            </Grid>
+                            <Grid Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=IsMouseOver, Converter={StaticResource BooleanToNoVisibilityConverter}}"                                                       
+                                  Margin="0"
+                                  Width="14"
+                                  Height="14"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center">
+                                <Ellipse Fill="Transparent"/>
+                                <materialDesign:PackIcon Width="12"
+                                                         Height="12"
+                                                         Kind="Close"
+                                                         VerticalAlignment="Center"
+                                                         HorizontalAlignment="Center"
+                                                         Foreground="{StaticResource UserMenuIconForegroundBrush}"/>
+                            </Grid>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="myStyle" TargetType="materialDesign:PackIcon">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="materialDesign:PackIcon">
+                        <StackPanel>
+                            <Grid 
+                                      Margin="0"
+                                      Width="16"
+                                      Height="16"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center">
+                                <Ellipse Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
+                                             Margin="0 0 0 0" />
+                                <materialDesign:PackIcon Width="12"
+                                                             Height="12"
+                                                             Kind="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Kind}"
+                                                             Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}"
+                                                             VerticalAlignment="Center"
+                                                             HorizontalAlignment="Center"/>
+                            </Grid>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+    </UserControl.Resources>
+    <Grid>
+        <TabControl  >
+            <!--ItemsSource="{Binding DeviceContentViewModels}"
+                    SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"-->
+            <!--<TabControl.Visibility>
+                <MultiBinding Converter="{StaticResource MultiOrBooleanToNoVisibilityConverter}">
+                    <Binding Path="IsSyncUserDataInProgress" />
+                    <Binding Path="IsIdentifyInProgress" />
+                </MultiBinding>
+            </TabControl.Visibility>-->
+            <!--<TabControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="30"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+
+
+
+                            <materialDesign:PackIcon Kind="FileDocument"
+                                                     Background="{StaticResource ST_ColdGray}"
+                                                     Visibility="{Binding IsProductManualSelected, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                                     Style="{StaticResource myStyle}"/>
+
+                            <materialDesign:PackIcon Kind="LinkVariant"
+                                                     Background="{StaticResource ST_Blue}"
+                                                     Foreground="{StaticResource ST_White}"
+                                                     Style="{StaticResource myStyle}">
+                                <materialDesign:PackIcon.Visibility>
+                                    <MultiBinding Converter="{StaticResource MultiBooleanToVisibilityConverter}">
+                                        <Binding Path="IsConnected" />
+                                        <Binding Path="IsProductManualSelected" Converter="{StaticResource InvertBoolConverter}" />
+                                    </MultiBinding>
+                                </materialDesign:PackIcon.Visibility>
+                            </materialDesign:PackIcon>
+
+                            <materialDesign:PackIcon Kind="LinkVariantOff"
+                                                     Background="{StaticResource ST_Red}"
+                                                     Foreground="{StaticResource ST_White}"
+                                                     Style="{StaticResource myStyle}">
+                                <materialDesign:PackIcon.Visibility>
+                                    <MultiBinding Converter="{StaticResource MultiBooleanToVisibilityConverter}">
+                                        <Binding Path="IsConnected" Converter="{StaticResource InvertBoolConverter}" />
+                                        <Binding Path="IsProductManualSelected" Converter="{StaticResource InvertBoolConverter}" />
+                                    </MultiBinding>
+                                </materialDesign:PackIcon.Visibility>
+                            </materialDesign:PackIcon>
+                        </Grid>
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding ProductName}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Margin="5 0 0 0"
+                                   FontWeight="Bold"
+                                   FontSize="18" />
+                        <Button Grid.Column="2"
+                                VerticalAlignment="Center"                              
+                                Style="{StaticResource CloseTabButton}"
+                                Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" />
+                    </Grid>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <deviceTabControl:DeviceContentView />
+                </DataTemplate>
+            </TabControl.ContentTemplate>-->
+            <TabItem Header="header">
+                <AdornerDecorator>
+                <local:DeviceContentView/>
+                </AdornerDecorator>
+            </TabItem>
+            <TabItem Header="header1">
+                <AdornerDecorator>
+                <local:DeviceContentView/>
+                </AdornerDecorator>
+            </TabItem>
+            <TabItem Header="header2">
+                <AdornerDecorator>
+                <local:DeviceContentView/>
+                </AdornerDecorator>
+            </TabItem>
+            <TabItem Header="header3">
+                <AdornerDecorator>
+                <local:DeviceContentView/>
+                </AdornerDecorator>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>
